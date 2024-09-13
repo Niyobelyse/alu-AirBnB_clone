@@ -23,7 +23,7 @@ registered_models = storage.models
 
 class HBNBCommand(Cmd):
     """
-    The HBNB Command Interpreter serves as the main interface 
+    The HBNB Command Interpreter serves as the main interface
     for the AirBnB Clone.
     All interactions with the system are facilitated through this class.
     """
