@@ -29,7 +29,6 @@ class HBNBCommand(Cmd):
 
     prompt = "(airbnb) "
 
-    """Commands"""
     def do_EOF(self, args):
         """Exit the program in non-interactive mode"""
         return True
@@ -168,7 +167,7 @@ class HBNBCommand(Cmd):
 
     def emptyline(self):
         """Override empty line to do nothing"""
-        return
+        pass
 
 
 def parse(line: str):
