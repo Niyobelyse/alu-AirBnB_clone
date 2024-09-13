@@ -5,6 +5,7 @@ This module defines the User class which inherits from BaseModel.
 
 from models.base_model import BaseModel
 
+
 class User(BaseModel):
     """
     The User class represents a user in the AirBnB clone.
