@@ -54,9 +54,28 @@ class HBNBCommand(Cmd):
         else:
             print("** Too many arguments for create **")
 
-    def do_display(self, arg):
+    def do_destroy(self, arg):
+        """Deletes an instance of a Model based on its ModelName and id."""
+        args, n = parse(arg)
+
+        if not n:
+            print("** Model name missing **")
+        elif n == 1:
+            print("** instance id missing **")
+        elif n == 2:
+            try:
+                storage.delete_by_id(*args)
+                print("** Instance deleted **")
+            except ModelNotFoundError:
+                print("** Model doesn't exist **")
+            except InstanceNotFoundError:
+                print("** No instance found **")
+        else:
+            print("** Too many arguments for destroy **")
+
+    def do_show(self, arg):
         """Displays the specified instance of a Model based on its ModelName and id, e.g.,
-        $ display ModelName instance_id
+        $ show ModelName instance_id
         Prints error message if either ModelName or instance_id is missing
         Prints an Error message for a wrong ModelName or instance_id"""
         args, n = parse(arg)
@@ -74,43 +93,11 @@ class HBNBCommand(Cmd):
             except InstanceNotFoundError:
                 print("** No instance found **")
         else:
-            print("** Too many arguments for display **")
+            print("** Too many arguments for show **")
 
-    def do_remove(self, arg):
-        """Deletes an instance of a Model based on its ModelName and id."""
-        args, n = parse(arg)
-
-        if not n:
-            print("** Model name missing **")
-        elif n == 1:
-            print("** instance id missing **")
-        elif n == 2:
-            try:
-                storage.delete_by_id(*args)
-            except ModelNotFoundError:
-                print("** Model doesn't exist **")
-            except InstanceNotFoundError:
-                print("** No instance found **")
-        else:
-            print("** Too many arguments for remove **")
-
-    def do_list(self, args):
-        """Usage: list or list <ModelName> or <ModelName>.list()
-        Display string representations of all instances of a given model.
-        If no model is specified, displays all instantiated objects."""
-        args, n = parse(args)
-
-        if n < 2:
-            try:
-                print(storage.find_all(*args))
-            except ModelNotFoundError:
-                print("** Model doesn't exist **")
-        else:
-            print("** Too many arguments for list **")
-
-    def do_modify(self, arg):
+    def do_update(self, arg):
         """Updates an instance based on its id, e.g.,
-        $ modify Model id field value
+        $ update Model id field value
         Throws errors for missing arguments"""
         args, n = parse(arg)
         if not n:
@@ -124,10 +111,25 @@ class HBNBCommand(Cmd):
         else:
             try:
                 storage.update_one(*args[0:4])
+                print("** Instance updated **")
             except ModelNotFoundError:
                 print("** Model doesn't exist **")
             except InstanceNotFoundError:
                 print("** No instance found **")
+
+    def do_all(self, args):
+        """Usage: all or all <ModelName>
+        Display string representations of all instances of a given model.
+        If no model is specified, displays all instantiated objects."""
+        args, n = parse(args)
+
+        if n < 2:
+            try:
+                print(storage.find_all(*args))
+            except ModelNotFoundError:
+                print("** Model doesn't exist **")
+        else:
+            print("** Too many arguments for all **")
 
     def do_registered_models(self, arg):
         """Prints all registered Models"""
