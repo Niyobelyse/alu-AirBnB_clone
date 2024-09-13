@@ -46,7 +46,7 @@ class HBNBCommand(Cmd):
         if not n:
             print("** Model name missing **")
         elif args[0] not in registered_models:
-            print("** Model doesn't exist **")
+            print("** class doesn't exist **")
         elif n == 1:
             temp = eval(args[0])()
             print(temp.id)
@@ -67,7 +67,7 @@ class HBNBCommand(Cmd):
                 storage.delete_by_id(*args)
                 print("** Instance deleted **")
             except ModelNotFoundError:
-                print("** Model doesn't exist **")
+                print("** class doesn't exist **")
             except InstanceNotFoundError:
                 print("** no instance found **")
         else:
@@ -89,7 +89,7 @@ class HBNBCommand(Cmd):
                 instance = storage.find_by_id(*args)
                 print(instance)
             except ModelNotFoundError:
-                print("** Model doesn't exist **")
+                print("** class doesn't exist **")
             except InstanceNotFoundError:
                 print("** no instance found **")
         else:
@@ -113,7 +113,7 @@ class HBNBCommand(Cmd):
                 storage.update_one(*args[0:4])
                 print("** Instance updated **")
             except ModelNotFoundError:
-                print("** Model doesn't exist **")
+                print("** class doesn't exist **")
             except InstanceNotFoundError:
                 print("** no instance found **")
 
@@ -127,7 +127,7 @@ class HBNBCommand(Cmd):
             try:
                 print(storage.find_all(*args))
             except ModelNotFoundError:
-                print("** Model doesn't exist **")
+                print("** class doesn't exist **")
         else:
             print("** Too many arguments for all **")
 
@@ -162,7 +162,7 @@ class HBNBCommand(Cmd):
         """Override default method to handle model methods"""
         if '.' in arg and arg[-1] == ')':
             if arg.split('.')[0] not in registered_models:
-                print("** Model doesn't exist **")
+                print("** class doesn't exist **")
                 return
             return self.handle_model_methods(arg)
         return Cmd.default(self, arg)
