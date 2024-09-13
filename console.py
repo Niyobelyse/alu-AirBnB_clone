@@ -23,7 +23,8 @@ registered_models = storage.models
 
 class HBNBCommand(Cmd):
     """
-    The HBNB Command Interpreter serves as the main interface for the AirBnB Clone.
+    The HBNB Command Interpreter serves as the main interface 
+    for the AirBnB Clone.
     All interactions with the system are facilitated through this class.
     """
 
@@ -75,8 +76,8 @@ class HBNBCommand(Cmd):
             print("** Too many arguments for destroy **")
 
     def do_show(self, arg):
-        """Displays the specified instance of a Model based on its ModelName and id, e.g.,
-        $ show ModelName instance_id
+        """Displays the specified instance of a Model based on its ModelName
+        and id, e.g., $ show ModelName instance_id
         Prints error message if either ModelName or instance_id is missing
         Prints an Error message for a wrong ModelName or instance_id"""
         args, n = parse(arg)
@@ -137,7 +138,8 @@ class HBNBCommand(Cmd):
         print(*registered_models)
 
     def handle_model_methods(self, arg):
-        """Handle Model Methods, e.g., <ModelName>.list(), <ModelName>.display() etc"""
+        """Handle Model Methods, e.g., <ModelName>.list(),
+        <ModelName>.display() etc"""
 
         printable = ("list(", "display(", "count(", "create(")
         try:
