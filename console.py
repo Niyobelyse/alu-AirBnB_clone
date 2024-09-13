@@ -44,7 +44,7 @@ class HBNBCommand(Cmd):
         args, n = parse(args)
 
         if not n:
-            print("** Model name missing **")
+            print("** class name missing **")
         elif args[0] not in registered_models:
             print("** class doesn't exist **")
         elif n == 1:
@@ -59,7 +59,7 @@ class HBNBCommand(Cmd):
         args, n = parse(arg)
 
         if not n:
-            print("** Model name missing **")
+            print("** class name missing **")
         elif n == 1:
             print("** instance id missing **")
         elif n == 2:
@@ -81,7 +81,7 @@ class HBNBCommand(Cmd):
         args, n = parse(arg)
 
         if not n:
-            print("** Model name missing **")
+            print("** class name missing **")
         elif n == 1:
             print("** instance id missing **")
         elif n == 2:
@@ -101,7 +101,7 @@ class HBNBCommand(Cmd):
         Throws errors for missing arguments"""
         args, n = parse(arg)
         if not n:
-            print("** Model name missing **")
+            print("** class name missing **")
         elif n == 1:
             print("** instance id missing **")
         elif n == 2:
