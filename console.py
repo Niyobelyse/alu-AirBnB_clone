@@ -32,8 +32,7 @@ class HBNBCommand(Cmd):
 
     def do_EOF(self, args):
         """Exit the program in non-interactive mode"""
-        print("")
-        return True
+        return True  # No need to print anything
 
     def do_quit(self, args):
         """Quit command to exit the program"""
@@ -46,7 +45,7 @@ class HBNBCommand(Cmd):
         args, n = parse(args)
 
         if not n:
-            print("** class name missing **")
+            print("** Model name missing **")  # Updated error message
         elif args[0] not in registered_models:
             print("** class doesn't exist **")
         elif n == 1:
