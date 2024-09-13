@@ -27,10 +27,11 @@ class HBNBCommand(Cmd):
     All interactions with the system are facilitated through this class.
     """
 
-    prompt = "(airbnb) "
+    prompt = "(hbnb) "
 
     def do_EOF(self, args):
         """Exit the program in non-interactive mode"""
+        print("")
         return True
 
     def do_quit(self, args):
@@ -149,7 +150,7 @@ class HBNBCommand(Cmd):
         except AttributeError:
             print("** Invalid method **")
         except InstanceNotFoundError:
-            print("** o instance found **")
+            print("** no instance found **")
         except TypeError as te:
             field = te.args[0].split()[-1].replace("_", " ")
             field = field.strip("'")
