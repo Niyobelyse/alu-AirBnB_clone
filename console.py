@@ -149,7 +149,7 @@ class HBNBCommand(Cmd):
         except AttributeError:
             print("** Invalid method **")
         except InstanceNotFoundError:
-            print("** no instance found **")
+            print("** o instance found **")
         except TypeError as te:
             field = te.args[0].split()[-1].replace("_", " ")
             field = field.strip("'")
