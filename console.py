@@ -69,7 +69,7 @@ class HBNBCommand(Cmd):
             except ModelNotFoundError:
                 print("** Model doesn't exist **")
             except InstanceNotFoundError:
-                print("** No instance found **")
+                print("** no instance found **")
         else:
             print("** Too many arguments for destroy **")
 
@@ -91,7 +91,7 @@ class HBNBCommand(Cmd):
             except ModelNotFoundError:
                 print("** Model doesn't exist **")
             except InstanceNotFoundError:
-                print("** No instance found **")
+                print("** no instance found **")
         else:
             print("** Too many arguments for show **")
 
@@ -115,7 +115,7 @@ class HBNBCommand(Cmd):
             except ModelNotFoundError:
                 print("** Model doesn't exist **")
             except InstanceNotFoundError:
-                print("** No instance found **")
+                print("** no instance found **")
 
     def do_all(self, args):
         """Usage: all or all <ModelName>
@@ -149,7 +149,7 @@ class HBNBCommand(Cmd):
         except AttributeError:
             print("** Invalid method **")
         except InstanceNotFoundError:
-            print("** No instance found **")
+            print("** no instance found **")
         except TypeError as te:
             field = te.args[0].split()[-1].replace("_", " ")
             field = field.strip("'")
