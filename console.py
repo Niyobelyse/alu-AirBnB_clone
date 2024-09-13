@@ -45,7 +45,7 @@ class HBNBCommand(Cmd):
         args, n = parse(args)
 
         if not n:
-            print("** Model name missing **")  # Updated error message
+            print("** class name missing **")  # Updated error message
         elif args[0] not in registered_models:
             print("** class doesn't exist **")
         elif n == 1:
