@@ -28,7 +28,7 @@ class TestHBNBCommand(unittest.TestCase):
         """Test create command with no model name"""
         with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("create")
-            self.assertEqual(output.getvalue(), "** Model name missing **\n")
+            self.assertEqual(output.getvalue(), "** class name missing **\n")  # Corrected output
 
     # Add more tests for the rest of the commands if needed
 
