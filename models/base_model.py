@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 """
 This File defines the BaseModel class that will
-serve as the base class for all our models."""
+serve as the base class for all our models.
+"""
 
 from uuid import uuid4
 from datetime import datetime
@@ -12,47 +13,47 @@ class BaseModel:
     """Base class for all our classes"""
 
     def __init__(self, *args, **kwargs):
-        """constructor it either deserialize
-        a serialized class or intialize a new"""
+        """Constructor: it either deserializes
+        a serialized class or initializes a new one."""
 
-        # initialize if nothing is passed
-        if kwargs == {}:
+        # Initialize a new instance if no kwargs are passed
+        if not kwargs:
             self.id = str(uuid4())
             self.created_at = datetime.utcnow()
             self.updated_at = datetime.utcnow()
             models.storage.new(self)
-            return
-
-        # using key words (deserialize)
-        for key, val in kwargs.items():
-            if key == '__class__':
-                continue
-            self.__dict__[key] = val
-        if 'created_at' in kwargs:
+        else:
+            # Deserialize an instance from kwargs
+            for key, val in kwargs.items():
+                if key == '__class__':
+                    continue
+                setattr(self, key, val)
+            
+            # Handle date fields
             self.created_at = datetime.strptime(
-                    kwargs['created_at'],
-                    '%Y-%m-%dT%H:%M:%S.%f')
-        if 'updated_at' in kwargs:
+                kwargs.get('created_at'), '%Y-%m-%dT%H:%M:%S.%f'
+            ) if 'created_at' in kwargs else datetime.utcnow()
+
             self.updated_at = datetime.strptime(
-                    kwargs['updated_at'],
-                    '%Y-%m-%dT%H:%M:%S.%f')
+                kwargs.get('updated_at'), '%Y-%m-%dT%H:%M:%S.%f'
+            ) if 'updated_at' in kwargs else datetime.utcnow()
 
     def __str__(self):
-        """overide str representation of self"""
-        fmt = "[{}] ({}) {}"
-        return fmt.format(
-                type(self).__name__,
-                self.id,
-                self.__dict__)
+        """Override the string representation of the instance"""
+        return "[{}] ({}) {}".format(
+            type(self).__name__,
+            self.id,
+            self.__dict__
+        )
 
     def save(self):
-        """updates last updated variable"""
+        """Updates the updated_at attribute and saves the instance"""
         self.updated_at = datetime.utcnow()
         models.storage.save()
 
     def to_dict(self):
-        """Returns a dictionary representation of self"""
-        temp = {**self.__dict__}
+        """Returns a dictionary representation of the instance"""
+        temp = self.__dict__.copy()
         temp['__class__'] = type(self).__name__
         temp['created_at'] = self.created_at.strftime('%Y-%m-%dT%H:%M:%S.%f')
         temp['updated_at'] = self.updated_at.strftime('%Y-%m-%dT%H:%M:%S.%f')
@@ -60,53 +61,52 @@ class BaseModel:
 
     @classmethod
     def all(cls):
-        """Retrieve all current instances of cls"""
+        """Retrieve all current instances of the class"""
         return models.storage.find_all(cls.__name__)
 
     @classmethod
     def count(cls):
-        """Get the number of all current instances of cls"""
+        """Get the number of all current instances of the class"""
         return len(models.storage.find_all(cls.__name__))
 
     @classmethod
     def create(cls, *args, **kwargs):
-        """Creates an Instance"""
-        new = cls(*args, **kwargs)
-        return new.id
+        """Create an instance and return its id"""
+        new_instance = cls(*args, **kwargs)
+        models.storage.new(new_instance)
+        models.storage.save()
+        return new_instance.id
 
     @classmethod
     def show(cls, instance_id):
-        """Retrieve an instance"""
-        return models.storage.find_by_id(
-            cls.__name__,
-            instance_id
-        )
+        """Retrieve a specific instance by its ID"""
+        return models.storage.find_by_id(cls.__name__, instance_id)
 
     @classmethod
     def destroy(cls, instance_id):
-        """Deletes an instance"""
-        return models.storage.delete_by_id(
-            cls.__name__,
-            instance_id
-        )
+        """Delete an instance by its ID"""
+        return models.storage.delete_by_id(cls.__name__, instance_id)
 
     @classmethod
     def update(cls, instance_id, *args):
-        """Updates an instance
-        if args has one elem and its a dict:
-        it updates by key value
+        """Update an instance's attributes
+        If args contains a single dictionary, update using key-value pairs.
+        Otherwise, treat args as key-value pairs."""
+        
+        instance = cls.show(instance_id)
+        if not instance:
+            print("** no instance found **")
+            return
+        
+        if len(args) == 1 and isinstance(args[0], dict):
+            updates = args[0].items()
+        elif len(args) >= 2:
+            updates = [args[:2]]
         else:
-        updates by first being key and second being value"""
-        if not len(args):
             print("** attribute name missing **")
             return
-        if len(args) == 1 and isinstance(args[0], dict):
-            args = args[0].items()
-        else:
-            args = [args[:2]]
-        for arg in args:
-            models.storage.update_one(
-                cls.__name__,
-                instance_id,
-                *arg
-            )
+
+        for key, value in updates:
+            setattr(instance, key, value)
+
+        instance.save()
