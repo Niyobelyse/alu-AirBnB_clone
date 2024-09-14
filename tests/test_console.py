@@ -28,14 +28,18 @@ class TestUser(unittest.TestCase):
         # Retrieve all User instances
         all_users = User.all()
 
-        # Check if both instances are in the all_users result
-        self.assertIn(user1, all_users)
-        self.assertIn(user2, all_users)
+        # Check if both instances are in the all_users result by their string representations
+        user1_str = f"[User] ({user1.id}) {{'id': '{user1.id}', 'created_at': {user1.created_at}, 'updated_at': {user1.updated_at}}}"
+        user2_str = f"[User] ({user2.id}) {{'id': '{user2.id}', 'created_at': {user2.created_at}, 'updated_at': {user2.updated_at}}}"
+
+        self.assertIn(user1_str, all_users)
+        self.assertIn(user2_str, all_users)
 
         # Ensure their IDs are in the printed output
         with patch('sys.stdout', new=StringIO()) as output:
-            for user in all_users:
-                print(user.id)
+            for user_str in all_users:
+                print(user_str)
+            
             output_value = output.getvalue()
             self.assertIn(user1.id, output_value)
             self.assertIn(user2.id, output_value)
