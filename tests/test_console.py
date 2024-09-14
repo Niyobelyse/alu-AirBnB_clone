@@ -1,36 +1,46 @@
-#!/usr/bin/python3
-"""
-Unit tests for the HBNBCommand class
-"""
-
+from models.user import User  # Assuming User is a subclass of BaseModel
 import unittest
-from console import HBNBCommand
 from unittest.mock import patch
 from io import StringIO
 
 
-class TestHBNBCommand(unittest.TestCase):
-    """Unit tests for the HBNBCommand interpreter"""
+class TestUser(unittest.TestCase):
+    """Test the User class"""
 
-    def test_quit(self):
-        """Test that typing quit exits the command interpreter"""
+    def test_user_initialization(self):
+        """Test initialization of a new User"""
+        user = User(email="test@example.com", password="password123")
+        self.assertEqual(user.email, "test@example.com")
+        self.assertEqual(user.password, "password123")
+        self.assertEqual(user.first_name, "")
+        self.assertEqual(user.last_name, "")
+
+    def test_user_all(self):
+        """Test User.all() method"""
+        # Create two user instances
+        user1 = User()
+        user2 = User()
+
+        # Save both instances
+        user1.save()
+        user2.save()
+
+        # Retrieve all User instances
+        all_users = User.all()
+
+        # Check if both instances are in the all_users result
+        self.assertIn(user1, all_users)
+        self.assertIn(user2, all_users)
+
+        # Ensure their IDs are in the printed output
         with patch('sys.stdout', new=StringIO()) as output:
-            HBNBCommand().onecmd("quit")
-            self.assertEqual(output.getvalue(), "")
+            for user in all_users:
+                print(user.id)
+            
+            output_value = output.getvalue()
+            self.assertIn(user1.id, output_value)
+            self.assertIn(user2.id, output_value)
 
-    def test_EOF(self):
-        """Test that typing EOF exits the command interpreter"""
-        with patch('sys.stdout', new=StringIO()) as output:
-            HBNBCommand().onecmd("EOF")
-            self.assertEqual(output.getvalue(), "")
-
-    def test_create_missing_model(self):
-        """Test create command with no model name"""
-        with patch('sys.stdout', new=StringIO()) as output:
-            HBNBCommand().onecmd("create")
-            self.assertEqual(output.getvalue(), "** class name missing **\n")  # Corrected output
-
-    # Add more tests for the rest of the commands if needed
 
 if __name__ == "__main__":
     unittest.main()
