@@ -36,7 +36,6 @@ class TestUser(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as output:
             for user in all_users:
                 print(user.id)
-            
             output_value = output.getvalue()
             self.assertIn(user1.id, output_value)
             self.assertIn(user2.id, output_value)
